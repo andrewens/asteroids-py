@@ -21,3 +21,9 @@ class CircleShape(pygame.sprite.Sprite):
     def update(self, dt):
         # sub-classes must override
         pass
+
+    def is_overlapping(self, other_circle):
+        offset = self.position.distance_squared_to(other_circle.position)
+        total_radius_squared = (self.radius + other_circle.radius) ** 2
+
+        return offset <= total_radius_squared

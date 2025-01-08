@@ -21,10 +21,10 @@ def main():
 
     Player.containers = (updatable_group, drawable_group)
     Asteroid.containers = (updatable_group, drawable_group, asteroids_group)
-    AsteroidField.containers = (updatable_group)
+    AsteroidField.containers = updatable_group
 
     # create game objects
-    Player(PLAYER_SPAWN_X, PLAYER_SPAWN_Y)
+    player = Player(PLAYER_SPAWN_X, PLAYER_SPAWN_Y)
     AsteroidField()
 
     # main game loop
@@ -33,15 +33,23 @@ def main():
             if event.type == pygame.QUIT:
                 return
 
-        dt = clock.tick() * 1e-3
         for game_object in updatable_group:
             game_object.update(dt)
+
+        for asteroid in asteroids_group:
+            if not asteroid.is_overlapping(player):
+                continue
+
+            print("Game over!")
+            return
 
         screen.fill(BACKGROUND_COLOR)
         for game_object in drawable_group:
             game_object.draw(screen)
 
         pygame.display.flip()
+
+        dt = clock.tick(60) * 1e-3
 
 
 if __name__ == "__main__":
