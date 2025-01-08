@@ -12,6 +12,11 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
 
+    updatable_group = pygame.sprite.Group()
+    drawable_group = pygame.sprite.Group()
+
+    Player.containers = (updatable_group, drawable_group)
+
     player = Player(PLAYER_SPAWN_X, PLAYER_SPAWN_Y)
 
     # main game loop
@@ -21,10 +26,12 @@ def main():
                 return
 
         dt = clock.tick() * 1e-3
-        player.update(dt)
+        for game_object in updatable_group:
+            game_object.update(dt)
 
         screen.fill(BACKGROUND_COLOR)
-        player.draw(screen)
+        for game_object in drawable_group:
+            game_object.draw(screen)
 
         pygame.display.flip()
 
