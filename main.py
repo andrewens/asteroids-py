@@ -23,7 +23,7 @@ def main():
 
     Player.containers = (updatable_group, drawable_group)
     Asteroid.containers = (updatable_group, drawable_group, asteroids_group)
-    AsteroidField.containers = (updatable_group)
+    AsteroidField.containers = updatable_group
     Shot.containers = (updatable_group, drawable_group, shots_group)
 
     # create game objects
@@ -40,11 +40,15 @@ def main():
             game_object.update(dt)
 
         for asteroid in asteroids_group:
-            if not asteroid.is_overlapping(player):
-                continue
+            for shot in shots_group:
+                if asteroid.is_overlapping(shot):
+                    shot.kill()
+                    asteroid.kill()
 
-            print("Game over!")
-            return
+        for asteroid in asteroids_group:
+            if asteroid.is_overlapping(player):
+                print("Game over!")
+                return
 
         screen.fill(BACKGROUND_COLOR)
         for game_object in drawable_group:
