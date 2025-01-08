@@ -43,7 +43,7 @@ def main():
             for shot in shots_group:
                 if asteroid.is_overlapping(shot):
                     shot.kill()
-                    asteroid.kill()
+                    asteroid.split()
 
         for asteroid in asteroids_group:
             if asteroid.is_overlapping(player):
